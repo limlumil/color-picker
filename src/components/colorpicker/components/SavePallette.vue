@@ -5,7 +5,7 @@
             <div v-for="(item, index) in savedColor" :key="index" class="col">
                 <div class="savedItem" :style="`background-color:${item}`">
                     <span class="material-symbols-outlined delete" @click="Delete(item)">
-                        delete
+                        <img :src="icon"/>
                     </span>
                 </div>
             </div>
@@ -14,11 +14,17 @@
     </div>
 </template>
 <script>
+import icon from "@/assets/icons/delete_FILL0_wght400_GRAD0_opsz24.svg"
 export default {
     props: {
         savedColor: {
             type: Array,
             default: []
+        }
+    },
+    data(){
+        return {
+            icon
         }
     },
     emits:["delete"],
