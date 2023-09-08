@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="containter">
     <ColorPicker/>
   </div>
 </template>
