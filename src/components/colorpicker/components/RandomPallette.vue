@@ -5,7 +5,7 @@
             <div class="col" v-for="(item, index) in randomColor" :key="index">
                 <div class="color" :style="`background-color:${item}`" @click.prevent="AddFeverite(item)">
                     <span v-if="faveriteColor.includes(item)" class="material-symbols-sharp" style="color:pink">
-                        favorite
+                        <img :src="icon"/>
                     </span>
                 </div>
                 <span>{{ item }}</span>
@@ -21,7 +21,7 @@
     </div>
 </template>
 <script>
-
+import icon from "@/assets/icons/favorite_FILL0_wght400_GRAD0_opsz24.svg"
 export default {
     props: {
         number: {
@@ -31,6 +31,7 @@ export default {
     },
     data() {
         return {
+            icon,
             randomColor: [],
             selectedColor: "",
             faveriteColor: [],
