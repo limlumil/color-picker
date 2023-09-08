@@ -68,7 +68,7 @@ export default {
     },
     methods: {
         Delete(item) {
-            console.log('item', item)
+          
             let currentSavedItem = localStorage.getItem("savedPalette");
             if (typeof currentSavedItem === 'string') {
 
@@ -81,7 +81,7 @@ export default {
             const filter = this.savedPalette.filter(el => el.favorite !== "")
             this.palettes = filter;
             this.isFilter = true;
-            console.log(filter);
+            
         },
         SeeAll() {
             this.palettes = this.savedPalette;

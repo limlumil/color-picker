@@ -73,23 +73,20 @@ export default {
 
             const currentSavedPalette = localStorage.getItem('savedPalette');
 
-            console.log(typeof currentSavedPalette);
-
             if(typeof currentSavedPalette ==='string'){
 
                 let palette = JSON.parse(currentSavedPalette);
-                console.log('current',palette)
+           
                 palette.push({id:uuidv4(),palette:this.randomColor,favorite:this.favoriteColor});
                 localStorage.setItem('savedPalette', JSON.stringify(palette));
                 this.$emit('savedPalette',palette);
 
-                console.log('palette',palette);
 
             }else{
 
                 localStorage.setItem('savedPalette', JSON.stringify([{id:uuidv4(),palette:this.randomColor,favorite:this.favoriteColor}]));
                 this.$emit('savedPalette',this.randomColor);
-                console.log('palette',this.randomColor);
+           
             }
         
         },
