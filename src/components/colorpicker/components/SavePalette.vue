@@ -3,7 +3,6 @@
         <div class="favorite-panel">
             <div class="favorite-panel-title">
                 <h5>
-
                     My palette color
                 </h5>
             </div>
@@ -21,13 +20,20 @@
         <div class="col">
             <div v-for="(item, index) in Palettes" :key="index" class="row">
                 <div v-for="(color, index) in item.palette" :key="index" class="savedPalette"
-                    :style="`background-color:${color}`">
+                    :style="`background-color:${color}`"
+                    @click="EditFavorite(item,color)"
+                    >
 
-                    <img v-if="item.favorite ===color" :src="heart"/>
+                    <img v-if="item.favorite === color && newFavorite.id!==item.id" :src="heart"/>
+                    <img v-if="newFavorite.color ===color && newFavorite.id === item.id " :src="heart"/>
 
                 </div>
                 <div class="tool-panel">
-                    <img :src="icon" @click="Delete(item)" />
+                    <img v-if="!edit" :src="icon" @click="Delete(item)" />
+                    <div v-if="edit && item.id === newFavorite.id">
+                        <img  v-if="edit" :src="done"  alt="done" @click="ConfirmEdit(item.id)"/>
+                        <img  v-if="edit" :src="close"  alt="close" @click="CancelEdit"/>
+                    </div>
                 </div>
             </div>
         </div>
@@ -37,6 +43,9 @@
 <script>
 import icon from "@/assets/icons/delete_FILL0_wght400_GRAD0_opsz24.svg";
 import heart from "@/assets/icons/favorite_FILL0_wght400_GRAD0_opsz24.svg";
+import done from "@/assets/icons/done_FILL0_wght400_GRAD0_opsz24.svg";
+import close from "@/assets/icons/close_FILL0_wght400_GRAD0_opsz24.svg";
+
 export default {
     props: {
         savedPalette: {
@@ -48,8 +57,15 @@ export default {
         return {
             icon,
             heart,
+            done,
+            close,
             palettes: [],
-            isFilter: false
+            isFilter: false,
+            edit:false,
+            newFavorite:{
+                id:"",
+                color:""
+            }
         }
     },
     emits: ["delete"],
@@ -86,6 +102,37 @@ export default {
         SeeAll() {
             this.palettes = this.savedPalette;
             this.isFilter = false;
+        },
+        EditFavorite(palette,color){
+            this.edit = true;
+            this.newFavorite = {
+                id:palette.id,
+                color:color
+            }
+            console.log(this.newFavorite);
+        },
+        ConfirmEdit(id){
+            let currentPallet = localStorage.getItem('savedPalette');
+            let editPallet = [];
+            if(typeof currentPallet ==='string'){
+
+               editPallet= JSON.parse(currentPallet).map(el=>({
+                id:el.id,
+                favorite:(el.id===id?this.newFavorite.color:el.favorite),
+                palette:el.palette,
+               }))
+
+                localStorage.setItem('savedPalette',JSON.stringify(editPallet));
+                this.palettes = editPallet;
+                this.edit=false;
+            }
+        },
+        CancelEdit(){
+
+            this.edit = false;
+            this.newFavorite.id="";
+            this.newFavorite.color="";
+
         }
     }
 }
